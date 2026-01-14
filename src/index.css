@@ -1,1 +1,26 @@
 @import "tailwindcss";
+
+@theme {
+
+  --palette-navy: #0C2C55;
+  --palette-teal: #296374;
+  --palette-blue: #629FAD;
+  --palette-cream: #EDEDCE;
+  --palette-white: #FFFFFF;
+  --palette-offwhite: #F7F9FB;
+  --palette-red: #C53030;
+
+  --color-page: var(--palette-offwhite);
+  --color-surface: var(--palette-white);
+
+  --color-primary: var(--palette-navy);
+  --color-secondary: var(--palette-teal);
+  --color-accent: var(--palette-blue);
+
+  --color-main: var(--palette-navy);
+  --color-muted: #3A5F6B;
+  --color-on-primary: var(--palette-cream);
+  --color-error: var(--palette-red);
+  
+  --color-subtle: rgba(12, 44, 85, 0.2);
+}
