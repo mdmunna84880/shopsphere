@@ -6,7 +6,9 @@ function MainLayout() {
     return ( 
         <div>
             <Header />
-                <Outlet />
+                <main className="min-h-screen">
+                    <Outlet />
+                </main>
             <Footer />
         </div>
      );

@@ -10,6 +10,7 @@ import SingIn from "pages/register";
 import Wishlist from "pages/wishlist";
 
 function AppRouter() {
+    // Create routes like routes and route but using hook.
     const elements = useRoutes([
         {
             path: "/",
