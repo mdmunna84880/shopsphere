@@ -1,4 +1,5 @@
-export const bannerItems = [
+
+export const carouselItems = [
   {
     id: 1,
     image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1920&q=80",
@@ -43,14 +44,5 @@ export const bannerItems = [
     subtitle: "Crush your fitness goals. Get up to 50% off on premium running shoes and activewear.",
     cta: "Shop Sportswear",
     link: "/shop/sports/sale"
-  },
-  {
-    id: 6,
-    image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=1920&q=80",
-    tag: "Editor's Pick",
-    title: "Timeless Elegance",
-    subtitle: "Precision engineering meets luxury design. Discover our exclusive chronograph series.",
-    cta: "View Watches",
-    link: "/shop/accessories/watches"
   }
 ];

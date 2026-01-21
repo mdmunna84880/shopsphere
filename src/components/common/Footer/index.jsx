@@ -1,5 +1,3 @@
-/** @format */
-
 import { CiMail } from "react-icons/ci";
 import { FiSend } from "react-icons/fi";
 
@@ -8,6 +6,7 @@ import Container from "components/ui/Container";
 import { contactDetails, footerData } from "./footerData";
 import { paymentMethods } from "./paymentMethod";
 import { socialLinks } from "./socialLinks";
+import Button from "components/ui/Button";
 
 function Footer() {
 // Getting year by calling getFullYear function
@@ -15,7 +14,7 @@ const currentYear = new Date().getFullYear();
 
   return (
     <footer className="bg-surface w-full border-t border-subtle shadow-lg">
-      <Container className="grid grid-cols-1 lg:grid-cols-12 py-8">
+      <Container className="grid grid-cols-1 lg:grid-cols-12 py-8 h-full w-full">
         <div className="lg:col-span-3">
           <div>
             <img src={logo} alt="Logo of Shopsphere" className="h-8 inline-block" />
@@ -54,8 +53,9 @@ const currentYear = new Date().getFullYear();
             </div>
           ))}
         </div>
-        <div className="lg:col-span-3 mt-8 lg:mt-0">
-          <h3 className="flex items-center text-main text-xl font-medium pb-2">
+        <div className="lg:col-span-3 mt-8 lg:mt-0 sm:block flex flex-col items-center">
+          <div>
+            <h3 className="flex items-center text-main text-xl font-medium pb-2">
             <span className="pr-2 text-primary">
               <FiSend />
             </span>{" "}
@@ -76,13 +76,14 @@ const currentYear = new Date().getFullYear();
                 placeholder="Enter your email"
               ></input>
             </div>
-            <button
+            <Button
               type="submit"
-              className="border py-1 px-2 rounded-md mt-3 bg-primary text-on-primary border-primary hover:opacity-90 active:opacity-80"
+              className="mt-3"
             >
               Subscribe
-            </button>
+            </Button>
           </form>
+          </div>
         </div>
       </Container>
       <Container className="flex flex-col gap-4 md:flex-row justify-between items-center py-8 bg-page">
