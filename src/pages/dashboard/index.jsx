@@ -22,6 +22,8 @@ function Dashboard() {
     (state) => state.products,
   );
 
+  const isLoading = status === "loading";
+
   // Initialising category to All
   const [activeCategory, setActiveCategory] = useState("All");
 
@@ -134,20 +136,23 @@ function Dashboard() {
       <div ref={categoryTopElementRef} style={{scrollMarginTop: "40px"}}/>
       <CategoryFilter
         categories={categories}
-        activeCategories={activeCategory}
+        currCategory={activeCategory}
         searchFor={search}
-        status={status}
+        loading={isLoading}
         error={error}
         totalItems={displayedProducts.length}
         onSelect={handleCategoryChange}
+
       />
-      <Product products={displayedProducts} />
+      <Product products={displayedProducts} loading={isLoading} error={error}/>
       {
         totalPages > 1 && <Pagination
         prevOnClick={handlePrevOnClick}
         nextOnClick={handleNextOnClick}
         noOfPages={totalPages}
         pageOnClick={handlePageOnClick}
+        loading={isLoading}
+        error={error}
       />
       }
     </div>

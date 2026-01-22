@@ -37,3 +37,7 @@
     to { transform: rotate(360deg); }
   }
 }
+
+.skeleton {
+  @apply bg-black/10 animate-pulse rounded;
+}
