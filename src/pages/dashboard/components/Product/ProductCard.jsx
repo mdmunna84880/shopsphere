@@ -1,3 +1,4 @@
+import React from "react";
 import { FiHeart, FiShoppingCart } from "react-icons/fi";
 
 import Button from "components/ui/Button";

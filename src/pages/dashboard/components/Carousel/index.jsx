@@ -10,10 +10,12 @@ import { carouselItems } from "./carouselItems";
 const SWIPE_THRESHOLD = 10000;
 
 const Carousel = () => {
+  // Using custom hook to get the currentIndex, direction, and more
   const { currentIndex, direction, paginate, isPaused, setIsPaused } = useCarousel(carouselItems.length);
-
+  
   const slide = carouselItems[currentIndex];
 
+  // Checking whether the user drag was intensional or accidental by muliplying the distance and velocity
   const handleDragEnd = (_, { offset, velocity }) => {
     const swipe = Math.abs(offset.x) * velocity.x;
     if (swipe < -SWIPE_THRESHOLD) paginate(1);

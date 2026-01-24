@@ -1,10 +1,10 @@
-/** @format */
-
+import React from "react";
 import { useEffect, useRef } from "react";
 import { motion, useAnimate } from "framer-motion";
 import { cn } from "utils/cn";
 
 export const PaginationDot = ({ isActive, isPaused, onClick }) => {
+  // Animation hook from the motion
   const [scope, animate] = useAnimate();
   const animationRef = useRef(null);
   const isPausedRef = useRef(isPaused);

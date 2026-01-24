@@ -1,5 +1,5 @@
 /** @format */
-
+import React from "react";
 import Button from "components/ui/Button";
 import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
