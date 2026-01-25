@@ -27,7 +27,10 @@ function Header() {
 
   const handleOutsideClick = useCallback(
     (e) => {
-      if (searchRef.current && !searchRef.current.contains(e.target))
+      // Tracking the value of input ref so that it must not close if it has any value
+      const hasValueInInput = inputRef.current.value?.trim();
+
+      if (searchRef.current && !searchRef.current.contains(e.target) && !hasValueInInput)
         setIsSearchOpen(false);
     },
     [searchRef],
@@ -40,14 +43,14 @@ function Header() {
 
   // Closing the search when there is no words and outside click of search field
   useEffect(() => {
-    if (isSearchOpen && !search) {
+    if (isSearchOpen && !search && !inputRef.current.value) {
       document.addEventListener("mousedown", handleOutsideClick);
     } else {
       document.removeEventListener("mousedown", handleOutsideClick);
     }
 
     return () => document.removeEventListener("mousedown", handleOutsideClick);
-  }, [isSearchOpen, handleOutsideClick, search]);
+  }, [isSearchOpen, handleOutsideClick, search, inputRef]);
 
   return (
     <header className="bg-surface h-16 sm:h-20 w-full fixed top-0 shadow-md shadow-black/10 z-50">
