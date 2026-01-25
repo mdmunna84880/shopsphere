@@ -84,7 +84,7 @@ const Carousel = () => {
       <SliderButton direction="next" onClick={() => paginate(1)} />
 
       <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 sm:gap-3">
-        {Array.from({ length: carouselItems.length }).map((_, idx) => (
+        {Array.from({ length: carouselItems.length }, (_, i)=> i + 1).map((idx) => (
           <PaginationDot
             key={idx}
             isActive={idx === currentIndex}
