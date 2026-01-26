@@ -15,7 +15,7 @@ const loadCartFromStorage = () => {
 };
 
 const initialState = {
-  cartItems: loadCartFromStorage()
+  cartItems: loadCartFromStorage(),
 };
 
 const cartSlice = createSlice({
