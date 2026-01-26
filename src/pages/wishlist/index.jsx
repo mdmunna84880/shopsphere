@@ -20,7 +20,7 @@ function Wishlist() {
   }
 
   return (
-    <div className="mt-16 sm:mt-20 bg-page min-h-screen">
+    <div className="mt-16 sm:mt-20 bg-page min-h-screen mb-12">
       <Container className="py-8 flex justify-between">
         <h1 className="font-bold text-main text-xl lg:text-2xl">
           My Wishlist{" "}

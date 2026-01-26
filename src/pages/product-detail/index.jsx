@@ -23,7 +23,7 @@ function ProductDetail() {
 // Getting params using react-router
   const { id } = useParams();
 //   State from store
-  const { selectedProduct, error, status } = useSelector(
+  const { selectedProduct, error, status, items:productItems } = useSelector(
     (state) => state.products,
   );
   const { cartItems } = useSelector((state) => state.cart);
@@ -33,6 +33,9 @@ function ProductDetail() {
   const isInCart = cartItems.some((item) => item.id === Number(id));
   const isInWishlist = wishlistItem.some((item) => item.id === Number(id));
 
+  const findProductIndex = (id)=>{
+    return productItems.findIndex((item)=>item.id === id);
+  }
 //   Dispatching or calling to get product on change of id, or dispatch
   useEffect(() => {
     dispatch(getProductDetails(Number(id)));
@@ -69,7 +72,7 @@ function ProductDetail() {
             <div className="absolute top-3 right-3">
               <Button
                 className="rounded-full w-8 h-8 p-0 bg-surface shadow-sm flex items-center justify-center border-none hover:scale-110 text-lg"
-                onClick={() => dispatch(toggleWishlist({id:Number(id)}))}
+                onClick={() => dispatch(toggleWishlist(productItems(findProductIndex(id))))}
               >
                 {isInWishlist ? (
                   <FiHeart className="h-5 w-5 fill-red-500 transition-colors" />
