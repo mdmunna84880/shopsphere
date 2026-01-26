@@ -5,7 +5,7 @@ import { FaMinus, FaPlus } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { cn } from "utils/cn";
 import { formatCurrencyToUS } from "utils/formatCurrency";
-import { Link } from "react-router";
+import Link  from "components/ui/Link";
 
 function CartCard({
   id,
@@ -29,7 +29,7 @@ function CartCard({
     >
       <div className="flex">
         <div className="col-span-3 h-full bg-gray-200 w-32 flex justify-center items-center rounded-l-md md:rounded-l-2xl p-4 md:p-4">
-          <Link to={`/product/${id}`}>
+          <Link href={`/product/${id}`} variant="nav">
             <div className="aspect-square w-20 ">
               <img
                 src={image}
@@ -40,16 +40,14 @@ function CartCard({
           </Link>
         </div>
         <div className="col-span-4 flex flex-col gap-4 p-4 md:p-4">
-          <Link to={`/product/${id}`}>
+          <Link href={`/product/${id}`} variant="nav">
             <h2 className="text-main text-base sm:text-lg line-clamp-1">
               {title}
             </h2>
           </Link>
-          <Link to={`/product/${id}`}>
-            <p className="text-muted capitalize text-sm sm:text-base">
-              {category}
-            </p>
-          </Link>
+          <p className="text-muted capitalize text-sm sm:text-base">
+            {category}
+          </p>
           <p className="text-main text-base font-semibold">
             {formatCurrencyToUS(price)}
           </p>

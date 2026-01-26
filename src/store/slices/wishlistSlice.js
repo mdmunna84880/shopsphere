@@ -28,7 +28,8 @@ const wishlistSlice = createSlice({
       }
     },
     removeFromWishlist(state, action) {
-      state.items.splice(action.payload.id, 1);
+      const itemIndex = findItemIndex(state.items, action.payload.id);
+      state.items.splice(itemIndex, 1);
       localStorage.setItem("wishlistItems", JSON.stringify(state.items));
     },
     toggleWishlist(state, action){
