@@ -47,19 +47,6 @@ const cartSlice = createSlice({
       
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
-    updateCartQuantity(state, action) {
-      const { quantity } = action.payload;
-      const itemIndex = findItemIndex(state.cartItems, action.payload.id);
-
-      if (itemIndex >= 0) {
-        if (quantity > 0) {
-          state.cartItems[itemIndex].cartQuantity = quantity;
-        } else {
-          state.cartItems.splice(itemIndex, 1);
-        }
-        localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
-      }
-    },
     removeFromCart(state, action) {
       state.cartItems.splice(action.payload.id, 1);
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));

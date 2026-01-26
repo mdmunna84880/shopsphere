@@ -3,24 +3,30 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { FiLock, FiLogIn, FiUser } from "react-icons/fi";
 
 import Button from "components/ui/Button";
 import Input from "components/ui/Input";
 import Link from "components/ui/Link";
-import { clearAuthError, login } from "store/slices/authSlice";
-import { isValidPassword, isValidUsername } from "utils/AuthValidation";
+import { clearAuthError, login, register } from "store/slices/authSlice";
+import { isValidEmail, isValidPassword, isValidUsername } from "utils/AuthValidation";
+import { useIdGenerator } from "hooks/useIdGenerator";
+import { FiLock, FiMail, FiUser, FiUserPlus } from "react-icons/fi";
 
-function Login() {
+function SignUp() {
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState({ password: "", username: "" });
+  const getId = useIdGenerator()
+  // Tracking form data and updating the form
+  const [formData, setFormData] = useState({ id: getId(), username: "", password: "", confirmPass: "",   email: ""});
   const navigate = useNavigate();
-
+  // Authentication state from store
   const { isAuthenticated, status, error } = useSelector((state) => state.auth);
   const isLoading = status === "loading";
+  // Initial validation field
   const [validationError, setValidationError] = useState({
+    username: "", 
     password: "",
-    username: "",
+    confirmPass: "",   
+    email: "",
     isDisabledSubmission: true,
   });
 
@@ -31,50 +37,56 @@ function Login() {
     setFormData((prev) => ({ ...prev, [name]: value }));
 
     let newError = "";
-    let hasErrorInPassword = false;
-    let hasErrorInUsernmae = false;
+    const hasError = [false, false, false, false];
+    
     // Validating password
     if (name === "password" && !isValidPassword(value)) {
       newError = "Password is not Valid";
-      hasErrorInPassword = true;
+      hasError[0] = true;
+    }
+    // Validating confirm password
+    if (name === "confirmPass" && formData.password !== value) {
+      newError = "Confirm Password is not matching";
+      hasError[1] = true;
     }
     // Validating username
     if (name === "username" && !isValidUsername(value)) {
       newError = "Username is no Valid";
-      hasErrorInUsernmae = true;
+      hasError[2] = true;
     }
+    // Validating email
+    if(name === "email" && !isValidEmail(value)){
+      newError = "Email is not Valid"
+      hasError[3] = true;
+    }
+
     // validating input field on every key pressed
     setValidationError((prevError) => ({
       ...prevError,
       [name]: newError,
-      isDisabledSubmission:
-        hasErrorInPassword && hasErrorInUsernmae ? true : false,
+      isDisabledSubmission: hasError.some(Boolean),
     }));
   };
 
-  // Handling submit button in better way
+  // Handling submit button and loged in using fakestore user
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData);
+    delete data.confirmPass;
     dispatch(clearAuthError());
-    dispatch(login(data));
+    dispatch(register(data));
+    if(status === "succeeded"){
+      alert("You have successfully simulated the signup form")
+      confirm("You are going to sign in using fakestore username and password")
+      dispatch(login({username: "mor_2314", password: "83r5^_"}))
+    }
   };
 
-  // Handling the demo data and making the validation true
-  const handleDemoData = () => {
-    setFormData({ username: "mor_2314", password: "83r5^_" });
-    setValidationError({
-      password: "",
-      username: "",
-      isDisabledSubmission: false,
-    });
-  };
-
-  // Navigating to the dashboard when user is already logged
+  // Navigating to the dashboard when user is logged or already logged
   useEffect(() => {
     if (isAuthenticated) {
-      confirm("You have successfully logged in or logged already")
+      confirm("You have successfully logged in or already logged via fakestore users")
       navigate("/");
     }
   }, [isAuthenticated, navigate]);
@@ -83,15 +95,16 @@ function Login() {
       <div className="bg-surface w-90 max-w-100 shadow-lg flex flex-col rounded-2xl relative border border-subtle">
         <div className="absoulute inset-0 bg-primary/10 w-full rounded-t-2xl p-4 text-center shadow-xs">
           <h2 className="text-lg md:text-xl lg:text-2xl text-main">
-            Welcome Back
+            Create Account
           </h2>
           <p className="text-base md:text-lg text-muted">
-            Sign in to Manage your account
+            Join us to start shopping
           </p>
         </div>
         <div className="flex-1 px-4 pt-8 pb-4">
           {error && <span className="text-error font-bold">{error}</span>}
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+            {/* Username field */}
             <Input
               label={"Enter your username:"}
               leftSpanEl={<FiUser />}
@@ -103,51 +116,67 @@ function Login() {
               error={validationError?.username}
               onChange={handleInputChange}
             />
+            {/* Email field */}
             <Input
-              label={"Enter your password:"}
+              label={"Enter your email address:"}
+              leftSpanEl={<FiMail />}
+              id={"email"}
+              placeholder="mdmunna19434@gmail.com"
+              autoComplete="email"
+              name="email"
+              value={formData.email}
+              error={validationError?.email}
+              onChange={handleInputChange}
+            />
+            {/* Password field */}
+            <Input
+              label={"Enter your new password:"}
               leftSpanEl={<FiLock />}
               id={"password"}
               type="password"
-              placeholder={"mdmunna@universe"}
-              autoComplete="current-password"
+              placeholder={"mdmunna898@3"}
+              autoComplete="new-password"
               name="password"
               value={formData.password}
               error={validationError?.password}
               onChange={handleInputChange}
             />
+            {/* Confirm Password field */}
+            <Input
+              label={"Confirm your entered password:"}
+              leftSpanEl={<FiLock />}
+              id={"confirmPassword"}
+              type="password"
+              placeholder={"mdmunna898@3"}
+              autoComplete="new-password"
+              name="confirmPass"
+              value={formData.confirmPass}
+              error={validationError?.confirmPass}
+              onChange={handleInputChange}
+            />
+            {/* Submit button */}
             <Button
               variant="primary"
-              leftIcon={<FiLogIn />}
+              leftIcon={<FiUserPlus />}
               type="submit"
               disabled={validationError.isDisabledSubmission}
               loading={isLoading}
             >
-              Sign In{" "}
+              Sign Up{" "}
             </Button>
           </form>
         </div>
         <div className="w-full text-center">
-          <p>
-            No account?{" "}
-            <Link variant="nav" href="/signup">
-              Create one
+          <p className="pb-8">
+            Already have an account
+            <Link variant="nav" href="/login" className={"pl-2 hover:underline"}>
+              Sign In
             </Link>
           </p>
-        </div>
-        <div className="border-t mx-4 mt-4 border-main/60" />
-        <div className="bg-accent/40 m-4 rounded-md p-4">
-          <h3>Demo Mode</h3>
-          <Button
-            variant="transparent"
-            className={"p-0"}
-            onClick={handleDemoData}
-          >
-            Tap to auto-fill (mor_2314)
-          </Button>
         </div>
       </div>
     </div>
   );
 }
 
-export default Login;
+export default SignUp;

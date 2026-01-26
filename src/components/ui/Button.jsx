@@ -10,6 +10,7 @@ const BUTTON_VARIANTS = {
   outline: "bg-transparent text-main border border-subtle hover:bg-black/5",
   destructive: "bg-error text-on-primary border border-error hover:opacity-90",
   disabled: "bg-black/10 text-muted border border-subtle cursor-not-allowed shadow-none",
+  transparent: "bg-page text-main hover:underline border-none bg-transparent shadow-none"
 };
 
 const BUTTON_SIZES = {
@@ -20,10 +21,10 @@ const BUTTON_SIZES = {
 
 const PRESS_MOTION = {
   whileHover: {
-    scale: 1.04
+    scale: 1.01
   },
   whileTap: {
-    scale: 0.96,
+    scale: 0.99,
   },
   transition: {
     type: "spring",
@@ -43,6 +44,7 @@ export default function Button({
   fullWidth = false,
   children,
   className,
+  btnCN,
   type = "button",
   ref,
   ...props
@@ -55,6 +57,7 @@ export default function Button({
 
   return (
     <motion.button
+      {...(!isDisabled ? PRESS_MOTION : {})}
       ref={ref}
       type={type}
       disabled={isDisabled}
@@ -66,7 +69,6 @@ export default function Button({
         BUTTON_SIZES[size],
         className,
       )}
-      {...(!isDisabled ? PRESS_MOTION : {})}
       {...props}
     >
       {loading && (
@@ -74,7 +76,7 @@ export default function Button({
           <div className="h-4 w-4 spinner" />
         </span>
       )}
-      <span className={cn("flex items-center gap-2", loading && "opacity-0")}>
+      <span className={cn("flex items-center gap-2", loading && "opacity-0", btnCN)}>
         {leftIcon && <span className="shrink-0">{leftIcon}</span>}
         <span className="whitespace-nowrap">{children}</span>
         {rightIcon && <span className="shrink-0">{rightIcon}</span>}

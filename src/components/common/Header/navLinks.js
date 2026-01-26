@@ -1,4 +1,4 @@
-import { FiShoppingCart, FiHeart, FiBell, FiLogIn, FiHome } from "react-icons/fi";
+import { FiShoppingCart, FiHeart, FiBell, FiHome } from "react-icons/fi";
 
 // Navlinks variables to change at one place
 export const navLinks = [
@@ -25,12 +25,5 @@ export const navLinks = [
         href: "/notifications",
         icon: FiBell,
         hasBadge: false,
-    },
-    {
-        label: "Login",
-        href: "/login",
-        icon: FiLogIn,
-        hasBadge: false,
     }
-
 ]
