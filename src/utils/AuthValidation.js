@@ -1,5 +1,5 @@
 export const isValidPassword = (password) =>{
-    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&^_])[A-Za-z\d@$!%*#?&^_]{6,}$/.test(password)
+    return /^[A-Za-z0-9@#$%^&*_!]{6,20}$/.test(password)
 }
 
 export const isValidUsername = (username) =>{

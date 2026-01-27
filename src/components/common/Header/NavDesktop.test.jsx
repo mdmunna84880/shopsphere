@@ -10,6 +10,9 @@ import NavDesktop from './NavDesktop'
 
 const store = configureStore({
   reducer: {
+    auth: () => ({ 
+      isAuthenticated: false
+    }),
     wishlist: () => ({ 
       items: [1, 2] 
     }),

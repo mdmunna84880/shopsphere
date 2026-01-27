@@ -22,67 +22,40 @@ function SignUp() {
   const { isAuthenticated, status, error } = useSelector((state) => state.auth);
   const isLoading = status === "loading";
   // Initial validation field
-  const [validationError, setValidationError] = useState({
-    username: "", 
-    password: "",
-    confirmPass: "",   
-    email: "",
-    isDisabledSubmission: true,
-  });
 
   // Handling validation and updatinig input value everytime
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     // Updating input value on every key pressed
-    setFormData((prev) => ({ ...prev, [name]: value }));
-
-    let newError = "";
-    const hasError = [false, false, false, false];
-    
-    // Validating password
-    if (name === "password" && !isValidPassword(value)) {
-      newError = "Password is not Valid";
-      hasError[0] = true;
-    }
-    // Validating confirm password
-    if (name === "confirmPass" && formData.password !== value) {
-      newError = "Confirm Password is not matching";
-      hasError[1] = true;
-    }
-    // Validating username
-    if (name === "username" && !isValidUsername(value)) {
-      newError = "Username is no Valid";
-      hasError[2] = true;
-    }
-    // Validating email
-    if(name === "email" && !isValidEmail(value)){
-      newError = "Email is not Valid"
-      hasError[3] = true;
-    }
-
-    // validating input field on every key pressed
-    setValidationError((prevError) => ({
-      ...prevError,
-      [name]: newError,
-      isDisabledSubmission: hasError.some(Boolean),
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));   
   };
+  // Validation logic
+  const usernameError = formData.username && !isValidUsername(formData.username) ? "Username is no Valid":"";
+  const passwordError = formData.password && !isValidPassword(formData.password) ? "Password is not Valid":"";
+  const confirmPassError = formData.confirmPass && formData.password !== formData.confirmPass ? "Confirm Password is not matching":"";
+  const emailError = formData.email && !isValidEmail(formData.email) ? "Email is not Valid": "";
+  // Tracking valid or not to disable the button
+  const isAllNotValid = !formData.username || !formData.password || !formData.confirmPass || !formData.email || usernameError || passwordError || confirmPassError || emailError;
 
   // Handling submit button and loged in using fakestore user
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData);
-    delete data.confirmPass;
+    // Destructuring the credential from formdata
+    const {id, username, password, email} = formData;
+    // Clearing authentication error
     dispatch(clearAuthError());
-    dispatch(register(data));
-    if(status === "succeeded"){
+    // Dispatching register to simulate registration
+    dispatch(register({id, username, password, email}))
+    .unwrap()
+    .then(()=>{
       alert("You have successfully simulated the signup form")
-      confirm("You are going to sign in using fakestore username and password")
-      dispatch(login({username: "mor_2314", password: "83r5^_"}))
-    }
+      const shouldLogin = confirm("You are going to sign in using fakestore username and password")
+      if(shouldLogin) dispatch(login({username: "mor_2314", password: "83r5^_"}));
+    })
+    .catch((err)=>{
+      console.error("Failed to register:", err);
+    })
   };
-
   // Navigating to the dashboard when user is logged or already logged
   useEffect(() => {
     if (isAuthenticated) {
@@ -113,7 +86,7 @@ function SignUp() {
               autoComplete="username"
               name="username"
               value={formData.username}
-              error={validationError?.username}
+              error={usernameError}
               onChange={handleInputChange}
             />
             {/* Email field */}
@@ -125,7 +98,7 @@ function SignUp() {
               autoComplete="email"
               name="email"
               value={formData.email}
-              error={validationError?.email}
+              error={emailError}
               onChange={handleInputChange}
             />
             {/* Password field */}
@@ -138,7 +111,7 @@ function SignUp() {
               autoComplete="new-password"
               name="password"
               value={formData.password}
-              error={validationError?.password}
+              error={passwordError}
               onChange={handleInputChange}
             />
             {/* Confirm Password field */}
@@ -151,7 +124,7 @@ function SignUp() {
               autoComplete="new-password"
               name="confirmPass"
               value={formData.confirmPass}
-              error={validationError?.confirmPass}
+              error={confirmPassError}
               onChange={handleInputChange}
             />
             {/* Submit button */}
@@ -159,7 +132,7 @@ function SignUp() {
               variant="primary"
               leftIcon={<FiUserPlus />}
               type="submit"
-              disabled={validationError.isDisabledSubmission}
+              disabled={isAllNotValid}
               loading={isLoading}
             >
               Sign Up{" "}

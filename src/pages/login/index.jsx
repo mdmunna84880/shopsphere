@@ -1,5 +1,5 @@
 /** @format */
-
+import React from "react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -18,38 +18,18 @@ function Login() {
 
   const { isAuthenticated, status, error } = useSelector((state) => state.auth);
   const isLoading = status === "loading";
-  const [validationError, setValidationError] = useState({
-    password: "",
-    username: "",
-    isDisabledSubmission: true,
-  });
+
+  const passwordError = (formData.password && !isValidPassword(formData.password)) ? "Password is not Valid":"";
+  const usernameError = (formData.username && !isValidUsername(formData.username)) ? "Username is no Valid": "";
+
+  const isAllNotValid = !formData.password || !formData.username || usernameError || passwordError;
 
   // Handling validation and updatinig input value everytime
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     // Updating input value on every key pressed
     setFormData((prev) => ({ ...prev, [name]: value }));
-
-    let newError = "";
-    let hasErrorInPassword = false;
-    let hasErrorInUsernmae = false;
-    // Validating password
-    if (name === "password" && !isValidPassword(value)) {
-      newError = "Password is not Valid";
-      hasErrorInPassword = true;
-    }
-    // Validating username
-    if (name === "username" && !isValidUsername(value)) {
-      newError = "Username is no Valid";
-      hasErrorInUsernmae = true;
-    }
-    // validating input field on every key pressed
-    setValidationError((prevError) => ({
-      ...prevError,
-      [name]: newError,
-      isDisabledSubmission:
-        hasErrorInPassword && hasErrorInUsernmae ? true : false,
-    }));
+  
   };
 
   // Handling submit button in better way
@@ -64,11 +44,6 @@ function Login() {
   // Handling the demo data and making the validation true
   const handleDemoData = () => {
     setFormData({ username: "mor_2314", password: "83r5^_" });
-    setValidationError({
-      password: "",
-      username: "",
-      isDisabledSubmission: false,
-    });
   };
 
   // Navigating to the dashboard when user is already logged
@@ -78,6 +53,7 @@ function Login() {
       navigate("/");
     }
   }, [isAuthenticated, navigate]);
+
   return (
     <div className="bg-page w-full min-h-screen flex flex-col items-center justify-center mt-12">
       <div className="bg-surface w-90 max-w-100 shadow-lg flex flex-col rounded-2xl relative border border-subtle">
@@ -100,7 +76,7 @@ function Login() {
               autoComplete="username"
               name="username"
               value={formData.username}
-              error={validationError?.username}
+              error={usernameError}
               onChange={handleInputChange}
             />
             <Input
@@ -112,14 +88,14 @@ function Login() {
               autoComplete="current-password"
               name="password"
               value={formData.password}
-              error={validationError?.password}
+              error={passwordError}
               onChange={handleInputChange}
             />
             <Button
               variant="primary"
               leftIcon={<FiLogIn />}
               type="submit"
-              disabled={validationError.isDisabledSubmission}
+              disabled={isAllNotValid}
               loading={isLoading}
             >
               Sign In{" "}

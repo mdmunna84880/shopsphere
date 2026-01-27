@@ -1,5 +1,3 @@
-/** @format */
-
 import Button from "components/ui/Button";
 import { MdDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
