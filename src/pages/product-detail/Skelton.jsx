@@ -1,7 +1,7 @@
 
 function Skeleton() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full h-full animate-pulse">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full h-full animate-pulse my-12">
       {/* Image Skeleton */}
       <div className="aspect-square bg-gray-200 rounded-2xl flex justify-center items-center">
         <div className="w-3/4 h-3/4 bg-gray-300 rounded-lg"></div>

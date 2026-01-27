@@ -1,4 +1,3 @@
-/** @format */
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
@@ -23,7 +22,7 @@ function ProductDetail() {
 // Getting params using react-router
   const { id } = useParams();
 //   State from store
-  const { selectedProduct, error, status, items:productItems } = useSelector(
+  const { selectedProduct, error, status } = useSelector(
     (state) => state.products,
   );
   const { cartItems } = useSelector((state) => state.cart);
@@ -33,29 +32,28 @@ function ProductDetail() {
   const isInCart = cartItems.some((item) => item.id === Number(id));
   const isInWishlist = wishlistItem.some((item) => item.id === Number(id));
 
-  const findProductIndex = (id)=>{
-    return productItems.findIndex((item)=>item.id === id);
-  }
 //   Dispatching or calling to get product on change of id, or dispatch
   useEffect(() => {
     dispatch(getProductDetails(Number(id)));
   }, [id, dispatch]);
 
+  if(error) return <h3 className="text-lg mt-8 text-error">{error}</h3>
+
+  // When the product is loading
+  if(isLoading) return <Skeleton />
+
   return (
     <Container className="mt-16 sm:mt-20 py-12 bg-page min-h-screen">
     <Link href="/" variant="nav" mainCN={"flex items-center gap-4"} className={"mb-4"}><IoMdArrowRoundBack />Back to Dashboard</Link>
-    {/* Error scenarios */}
-    {error && <h3 className="text-lg mt-8 text-error">{error}</h3>}
-    {isLoading && <Skeleton />}
       {/* When loaded successfully */}
-      {status === "succeeded" && (
+      {!isLoading && !error && (
         <div className="grid grid-cols-2 gap-4 w-full h-full shadow-md hover:shadow-lg rounded-2xl group">
           <div className="h-full relative overflow-hidden bg-black/5 flex justify-center items-center">
           {/* Images and Badges */}
             <div className="w-100 h-full flex justify-center items-center">
               <img
-                src={selectedProduct.image}
-                alt={selectedProduct.title}
+                src={selectedProduct?.image}
+                alt={selectedProduct?.title}
                 className="w-full object-contain transition-transform duration-500 scale-90 group-hover:scale-100 mix-blend-multiply p-4"
               />
             </div>
@@ -72,7 +70,7 @@ function ProductDetail() {
             <div className="absolute top-3 right-3">
               <Button
                 className="rounded-full w-8 h-8 p-0 bg-surface shadow-sm flex items-center justify-center border-none hover:scale-110 text-lg"
-                onClick={() => dispatch(toggleWishlist(productItems(findProductIndex(id))))}
+                onClick={() => dispatch(toggleWishlist(selectedProduct))}
               >
                 {isInWishlist ? (
                   <FiHeart className="h-5 w-5 fill-red-500 transition-colors" />
@@ -85,28 +83,28 @@ function ProductDetail() {
           {/* Content */}
           <div className="flex flex-col gap-2 p-4">
             <p className="uppercase text-lg text-accent">
-              {selectedProduct.category}
+              {selectedProduct?.category}
             </p>
             <h3 className="text-2xl md:text-3xl lg:text-4xl text-main">
-              {selectedProduct.title}
+              {selectedProduct?.title}
             </h3>
             <Rating
               rateClassName={"text-3xl"}
               starClassName={"w-8 h-8"}
               className={"mt-4"}
-              rate={selectedProduct.rating.rate}
-              count={selectedProduct.rating.count}
+              rate={selectedProduct?.rating?.rate}
+              count={selectedProduct?.rating?.count}
             />
             <div className="flex items-baseline gap-2 p-4 border border-subtle/40 w-full rounded-lg bg-gray-200">
               <span className="text-xl lg:text-3xl font-bold text-main">
-                {formatCurrencyToUS(selectedProduct.price)}
+                {formatCurrencyToUS(selectedProduct?.price)}
               </span>
               <span className="text-base lg:text-lg text-muted line-through decoration-muted">
-                {formatCurrencyToUS(selectedProduct.price * (1 / 0.8))}
+                {formatCurrencyToUS(selectedProduct?.price * (1 / 0.8))}
               </span>
             </div>
             <p className="text-lg pt-4 text-main">
-              {selectedProduct.description}
+              {selectedProduct?.description}
             </p>
             <div className="flex justify-between text-lg">
               <p className="text-muted flex items-center gap-2">

@@ -1,13 +1,14 @@
 /** @format */
 
 import { useDispatch, useSelector } from "react-redux";
+import { MdDelete } from "react-icons/md";
+
 import CartCard from "./CartCard";
 import { clearCart, decreaseCart, increaseCart, removeFromCart } from "store/slices/cartSlice";
 import { selectCartTotals } from "store/cartSelector";
 import { formatCurrencyToUS } from "utils/formatCurrency";
 import { cn } from "utils/cn";
 import Button from "components/ui/Button";
-import { MdDelete } from "react-icons/md";
 import Link from "components/ui/Link";
 
 function Cart() {
